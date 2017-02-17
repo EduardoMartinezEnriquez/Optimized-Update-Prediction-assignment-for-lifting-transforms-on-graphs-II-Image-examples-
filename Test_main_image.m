@@ -38,8 +38,8 @@ clear all
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % image=imread('lena.jpg','jpg'); 
-% image=imread('lena_md.png','png');
-image=imread('cameraman_sm.png','png');
+image=imread('lena_md.png','png');
+% image=imread('cameraman_sm.png','png');
 % % % % % image=imread('barbara.png','png');
 
   if length(size(image))==3
@@ -74,28 +74,21 @@ imshow(image,[]);
 % RANDOM VALUES FROM GAUSSIAN DISTRIBUTION (DATA GENERATION)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 nu_ep=0;
-var_ep=400;
 nu_et=0;
-var_et=1;
-% c=100;
-
-% ESTIMATE FOR EACH BLOCK?
-% NEGATIVE VALUES? (JUST FOR THE MODEL)
-% ADJAC, MATRIX NORMALIZATION FACTOR
-% % % % % var_ep=var(double(image(:)));
+var_et=10;
+var_ep=var(double(image(:)));
 c=mean(double(image(:)));
 
-% TO WORK IN BLOCKS
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% WORK IN BLOCKS TO REDUCE THE COMPUTATIONAL COMPLEXITY
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % size_block=25; % 9*9 blocks of 25x25 in Lena (225x225); 5 blocks 45
+size_block=32; % 4*4 blocks of 32x32 in Lena and cameraman (128x128); 16*16 blocks of 32x32 in Barbara (512x512);
 
-size_block=32; % 4*4 blocks of 32x32 in Lena and cameraman (128x128); 
+
+
 % MAXIMUM PERCENTAGE OF |U| NEIGHBORS ALLOWED.
 restriction=0.7;
-
-
-% % % % % size_block=225;
-% % % % % size_block=32; % 16*16 blocks of 32x32 in Barbara (512x512); 
 
 N=size_block^2;
 num_blocks=length(image)/size_block;
@@ -108,7 +101,7 @@ prop_ev_acum_RAN_matrix=zeros(num_it,N);
 D0_acum_MC_matrix=zeros(num_it,N);
 D0_acum_MAM_matrix=zeros(num_it,N);
 D0_acum_RAN_matrix=zeros(num_it,N);
-% figure
+
 
 % % % % % LOOP OVER BLOCKS
 
@@ -122,8 +115,8 @@ for ver_block=1:num_blocks
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % GENERATE THE WEIGHTED GRAPH 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-[W,x]=generate_signal_W_imagen2(size_block, partial_image);
-
+[W,x]=generate_signal_W_imagen3(size_block, partial_image);
+% [W,x]=generate_signal_W_imagen2(size_block, partial_image);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % GENERATE Q MATRIX
@@ -184,28 +177,51 @@ close all
 end
 
 
-% % % % % load partial_data
+% %    REPRESENTATION OF THE RECONSTRUCTED IMAGES FROM A PERCENTAGE OF U
+% %    COEFFICIENTS.
+figure
+imshow(reconst_5_percWMC,[])
+title('Reconstruction of the test image with |U|=0.05N using WMC')
+figure
+imshow(reconst_5_perc,[])
+title('Reconstruction of the test image with |U|=0.05N using WMC')
+figure
+imshow(reconst_10_percWMC,[])
+title('Reconstruction of the test image with |U|=0.10N using WMC')
+figure
+imshow(reconst_10_perc,[])
+title('Reconstruction of the test image with |U|=0.10N using WMC')
+figure
+imshow(reconst_20_percWMC,[])
+title('Reconstruction of the test image with |U|=0.20N using WMC')
+figure
+imshow(reconst_20_perc,[])
+title('Reconstruction of the test image with |U|=0.20N using WMC')
 figure
 imshow(reconst_30_percWMC,[])
-
+title('Reconstruction of the test image with |U|=0.3N using WMC')
 figure
 imshow(reconst_30_perc,[])
+title('Reconstruction of the test image with |U|=0.3N using WMC')
+figure
+imshow(reconst_40_percWMC,[])
+title('Reconstruction of the test image with |U|=0.4N using WMC')
+figure
+imshow(reconst_40_perc,[])
+title('Reconstruction of the test image with |U|=0.4N using WMC')
+
+
 
 aux=prop_ev_acum_MC_matrix==0;
 aux2=sum(aux,1);
 aux3=find(aux2==0);
 prop_ev_acum_MC_matrix=prop_ev_acum_MC_matrix(:,aux3);
 D0_acum_MC_matrix=D0_acum_MC_matrix(:,aux3);
-
-
 aux=prop_ev_acum_MAM_matrix==0;
 aux2=sum(aux,1);
 aux3=find(aux2==0);
 prop_ev_acum_MAM_matrix=prop_ev_acum_MAM_matrix(:,aux3);
 D0_acum_MAM_matrix=D0_acum_MAM_matrix(:,aux3);
-% 
-
-
 aux=prop_ev_acum_RAN_matrix==0;
 aux2=sum(aux,1);
 aux3=find(aux2==0);
@@ -221,13 +237,18 @@ prom_prop_ev_MC=mean(prop_ev_acum_MC_matrix);
 prom_MAM=mean(D0_acum_MAM_matrix,1);
 prom_prop_ev_MAM=mean(prop_ev_acum_MAM_matrix);
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% REPRESENT AVERAGE VALUES (ACROSS BLOCKSS)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 figure
 plot(prom_prop_ev_RAN, sqrt(prom_RAN),'y')
 hold on
 plot( prom_prop_ev_MC, sqrt(prom_MC), 'r')
 plot( prom_prop_ev_MAM, sqrt(prom_MAM), 'b')
-
+xlabel('|U|/N')
+ylabel('E_{rms}')
+legend('Random','WMC','Proposed')
 
 
 

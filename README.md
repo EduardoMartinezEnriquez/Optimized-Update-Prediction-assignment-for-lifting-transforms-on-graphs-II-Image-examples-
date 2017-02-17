@@ -5,7 +5,9 @@ Eduardo Martínez-Enríquez, Jesús Cid-Sueiro, Fenrando Díaz-de-María and Antonio 
 ========
 IMAGE REPESENTATION GRAPHS
 
-- To obtain the results with randomly generated graph signals (Fig.4 of the paper), 
+- To obtain the results with image exmaples (Fig.8 and Fig.9 of the paper), run "Test_main_image.m". 
+Images used in the experiments are included. Change the "size_block" parameter depending on the size of 
+the test image.
 
 
 NOTE: The algorithms use parfor commands (execute loop iterations in parallel) from the Parallel Computing Toolbox. 

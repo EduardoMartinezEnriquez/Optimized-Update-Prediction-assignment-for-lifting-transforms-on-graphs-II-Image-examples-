@@ -42,13 +42,20 @@ B_aux=imagen_aux';
 data=B_aux(:);
 data=double(data);% non efficient
 
+%NORMALIZATION FACTOR CALCULATION
+vect_estimation=[];
+
 for i=1:length(data) 
     aux=find(A(i,:)~=0);
-    sigma=10;
+    vect_estimation=[vect_estimation;data(aux)-data(i)];
+end
+sigma=std(vect_estimation);
+
+
+for i=1:length(data) 
+    aux=find(A(i,:)~=0);
     W(i,aux)=exp(-(abs(data(aux)-data(i))).^2./(2*sigma^2));
+    
     % remove auto-loops
     W(i,i)=0;
 end
-
-
-    
