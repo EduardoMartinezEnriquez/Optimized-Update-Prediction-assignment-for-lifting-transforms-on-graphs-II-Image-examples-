@@ -5,8 +5,8 @@ Eduardo Martínez-Enríquez, Jesús Cid-Sueiro, Fenrando Díaz-de-María and Antonio 
 ========
 IMAGE REPESENTATION GRAPHS
 
-- To obtain the results with image exmaples (Fig.8 and Fig.9 of the paper), run "Test_main_image.m". 
-Images used in the experiments are included. Change the "size_block" parameter depending on the size of 
+- To obtain the results with image examples (Fig.8 and Fig.9 of the paper), run "Test_main_image.m". 
+Test images used in the experiments are included. Change the "size_block" parameter depending on the size of 
 the test image.
 
 
