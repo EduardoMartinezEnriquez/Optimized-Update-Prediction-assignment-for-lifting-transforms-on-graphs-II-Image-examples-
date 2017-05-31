@@ -2,12 +2,11 @@
 % This script takes an image, constructs the corresponding graph,
 % and obtains the mean prediction error (detail coefficient energy) when
 % three different Update/Prediction solutions are used, namely: MAM
-% solution (proposed), WMC solution and random assignment. The script
+% solution (proposed), WMC solution and random assignment. The script also
 % reconstructs the image from the UPA selected applying the inverse lifting
 % transform
 % 
 %     
-%
 % References: "Optimized Update/Prediction Assignment for
 % Lifting Transforms on Graphs", Eduardo Martinez-Enriquez, Jesus Cid-Sueiro, 
 % Fernando Diaz-de-Maria, and Antonio Ortega
@@ -37,10 +36,9 @@ clear all
 %   INPUT IMAGE
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% image=imread('lena.jpg','jpg'); 
 image=imread('lena_md.png','png');
 % image=imread('cameraman_sm.png','png');
-% % % % % image=imread('barbara.png','png');
+% image=imread('barbara.png','png');
 
   if length(size(image))==3
         image= rgb2gray(image);
@@ -70,9 +68,9 @@ figure
 imshow(image,[]);
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% RANDOM VALUES FROM GAUSSIAN DISTRIBUTION (DATA GENERATION)
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% MODEL PARAMETERS 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 nu_ep=0;
 nu_et=0;
 var_et=10;
@@ -82,9 +80,9 @@ c=mean(double(image(:)));
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % WORK IN BLOCKS TO REDUCE THE COMPUTATIONAL COMPLEXITY
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% size_block=25; % 9*9 blocks of 25x25 in Lena (225x225); 5 blocks 45
+% % size_block=25; % 9*9 blocks of 25x25 in Lena (225x225); 5 blocks 45
+% Configuration used in the paper:
 size_block=32; % 4*4 blocks of 32x32 in Lena and cameraman (128x128); 16*16 blocks of 32x32 in Barbara (512x512);
-
 
 
 % MAXIMUM PERCENTAGE OF |U| NEIGHBORS ALLOWED.
@@ -116,7 +114,6 @@ for ver_block=1:num_blocks
 % GENERATE THE WEIGHTED GRAPH 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 [W,x]=generate_signal_W_imagen3(size_block, partial_image);
-% [W,x]=generate_signal_W_imagen2(size_block, partial_image);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % GENERATE Q MATRIX

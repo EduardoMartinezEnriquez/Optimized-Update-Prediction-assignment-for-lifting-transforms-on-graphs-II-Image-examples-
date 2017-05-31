@@ -1,4 +1,4 @@
-function [W,data]=generate_signal_W_imagen2(N_aux, imagen_aux) 
+function [W,data]=generate_signal_W_imagen3(N_aux, imagen_aux) 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % This function generates the weighted adjacency matrix
 %
@@ -40,7 +40,7 @@ W=A;
 
 B_aux=imagen_aux';
 data=B_aux(:);
-data=double(data);% non efficient
+data=double(data);
 
 %NORMALIZATION FACTOR CALCULATION
 vect_estimation=[];
